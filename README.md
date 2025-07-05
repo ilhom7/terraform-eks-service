@@ -41,7 +41,7 @@ This repository provides a complete Terraform setup to provision an Amazon EKS c
 Clone the repository and apply the Terraform configuration:
 
 ```bash
-git clone https://github.com/your-username/terraform-eks-service.git
+git clone https://github.com/ilhom7/terraform-eks-service.git
 cd terraform-eks-service
 
 terraform init
