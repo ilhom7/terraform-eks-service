@@ -1,20 +1,20 @@
-# Terraform AWS EKS Cluster with a Simple App Deployment
+# Terraform EKS Deployment with NGINX App
 
 This repository provides a complete Terraform setup to provision an Amazon EKS cluster and deploy a simple containerized service (NGINX) using Kubernetes.
 
 ---
 
-## 🚀 Features
+## What's Included
 
-- Creates a VPC with subnets
-- Provisions an EKS cluster and node group
-- Deploys a sample app (NGINX) to the cluster
-- Exposes the app via a LoadBalancer service
-- Uses separate Terraform module for EKS infrastructure
+- VPC, subnets, NAT gateway, and networking (via module)
+- IAM roles and policies for EKS control plane and node group
+- EKS cluster with managed node group
+- Kubernetes namespace, deployment, and service (NGINX)
+- Internal access using port-forwarding (ClusterIP service)
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 .
 ├── main.tf # Root module to deploy Kubernetes app
@@ -27,16 +27,16 @@ This repository provides a complete Terraform setup to provision an Amazon EKS c
 └── outputs.tf
 ---
 
-## ⚙️ Requirements
+## Prerequisites
 
 - Terraform >= 1.4
-- AWS CLI with credentials configured
-- `kubectl` installed
-- AWS IAM user/role with EKS + VPC + EC2 permissions
+- AWS CLI configured with appropriate IAM permissions
+- `kubectl` installed and configured
+- SSH access to an EC2 instance
 
 ---
 
-## 🛠️ Usage
+## Usage
 
 Clone the repository and apply the Terraform configuration:
 
@@ -47,8 +47,35 @@ cd terraform-eks-service
 terraform init
 terraform apply
 
-After a few minutes, you’ll see outputs including:
 
-EKS cluster endpoint
+This provisions:
 
-Load balancer hostname (URL for the app)
+VPC
+
+EKS control plane
+
+Node group
+
+IAM roles
+Accessing the App
+By default, the app is exposed via a ClusterIP service (internal only).
+
+🛠 SSH Port Forwarding (from local machine)
+1. On your Windows PC:
+Open PowerShell or CMD:
+
+powershell
+Copy
+Edit
+ssh -i "C:\Path\To\your-key.pem" -L 8888:localhost:8888 ubuntu@<EC2-Public-IP>
+Replace with the path to your .pem file and your EC2 public IP.
+
+2. On the EC2 instance:
+bash
+Copy
+Edit
+kubectl port-forward svc/myapp-service -n myapp 8888:80
+3. In your browser (on Windows):
+Open: http://localhost:8888
+
+✅ You should see the NGINX welcome page.
