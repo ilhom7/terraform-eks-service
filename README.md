@@ -46,36 +46,33 @@ cd terraform-eks-service
 
 terraform init
 terraform apply
-
+```
 
 This provisions:
 
-VPC
+- VPC
+- EKS control plane
+- Node group
+- IAM roles
 
-EKS control plane
-
-Node group
-
-IAM roles
-Accessing the App
+## Accessing the App
 By default, the app is exposed via a ClusterIP service (internal only).
 
-🛠 SSH Port Forwarding (from local machine)
+## SSH Port Forwarding (from local machine)
 1. On your Windows PC:
 Open PowerShell or CMD:
 
-powershell
-Copy
-Edit
+```bash
 ssh -i "C:\Path\To\your-key.pem" -L 8888:localhost:8888 ubuntu@<EC2-Public-IP>
 Replace with the path to your .pem file and your EC2 public IP.
-
+```
 2. On the EC2 instance:
-bash
-Copy
-Edit
+
+```bash
 kubectl port-forward svc/myapp-service -n myapp 8888:80
+```
+
 3. In your browser (on Windows):
 Open: http://localhost:8888
 
-✅ You should see the NGINX welcome page.
+## You should see the NGINX welcome page.
